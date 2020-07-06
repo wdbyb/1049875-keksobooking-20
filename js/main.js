@@ -1,3 +1,5 @@
+'use strict';
+
 var avatarNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -25,7 +27,7 @@ var generateOffer = function () {
   var location = {
     x: getRandom(160, 980),
     y: getRandom(130, 630)
-  }
+  };
 
   return {
     author: {
@@ -35,7 +37,7 @@ var generateOffer = function () {
       title: 'Заголовок',
       address: location.x + ', ' + location.y,
       price: '3500',
-      type: 'house',
+      type: getRandomElement(typesList),
       rooms: '2',
       guests: '2',
       checkin: getRandomElement(hoursList),
@@ -48,7 +50,7 @@ var generateOffer = function () {
       x: location.x,
       y: location.y
     }
-  }
+  };
 };
 
 var OFFERS_COUNT = 8;
@@ -63,7 +65,7 @@ var getArray = function () {
   }
 
   return newArray;
-}
+};
 
 var offers = getArray();
 
@@ -81,17 +83,17 @@ var createPin = function (offer) {
   mapPinElement.querySelector('img').alt = offer.offer.title;
 
   return mapPinElement;
-}
+};
 
 var pinsBlock = document.querySelector('.map__pins');
 
-var createPins = function (offers) {
+var createPins = function (objects) {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < offers.length; i++) {
+  for (var i = 0; i < objects.length; i++) {
     fragment.appendChild(createPin(offers[i]));
   }
   return fragment;
-}
+};
 
 var fragment = createPins(offers);
 
