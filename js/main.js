@@ -1,10 +1,16 @@
 'use strict';
 
+var OFFERS_COUNT = 8;
 var avatarNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var typesList = ['palace', 'flat', 'house', 'bungalo'];
 var hoursList = ['12:00', '13:00', '14:00'];
+var rooms = ['1', '2', '3'];
+var guests = ['1', '2', '3'];
+var map = document.querySelector('.map');
+var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var pinsBlock = document.querySelector('.map__pins');
 
 var getRandom = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
@@ -38,24 +44,19 @@ var generateOffer = function () {
       address: location.x + ', ' + location.y,
       price: '3500',
       type: getRandomElement(typesList),
-      rooms: '2',
-      guests: '2',
+      rooms: getRandomElement(rooms),
+      guests: getRandomElement(guests),
       checkin: getRandomElement(hoursList),
       checkout: getRandomElement(hoursList),
       features: getRandomElements(featuresList),
       description: 'Описание',
       photos: getRandomElements(photos),
     },
-    location: {
-      x: location.x,
-      y: location.y
-    }
+    location: location,
   };
 };
 
-var OFFERS_COUNT = 8;
-
-var getArray = function () {
+var generateOffers = function () {
   var newArray = [];
 
   for (var i = 0; i < OFFERS_COUNT; i++) {
@@ -67,12 +68,9 @@ var getArray = function () {
   return newArray;
 };
 
-var offers = getArray();
+var offers = generateOffers();
 
-var map = document.querySelector('.map');
 map.classList.remove('map--faded');
-
-var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 var createPin = function (offer) {
   var mapPinElement = mapPinTemplate.cloneNode(true);
@@ -84,8 +82,6 @@ var createPin = function (offer) {
 
   return mapPinElement;
 };
-
-var pinsBlock = document.querySelector('.map__pins');
 
 var createPins = function (objects) {
   var fragment = document.createDocumentFragment();
