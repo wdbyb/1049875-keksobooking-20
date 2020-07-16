@@ -158,15 +158,15 @@ var createCardFragment = function (array) {
   return cardFragment;
 };
 
-var setAttribute = function (aaf) {
-  for (var element of aaf) {
-    element.setAttribute('disabled', 'disabled');
+var setAttribute = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].setAttribute('disabled', 'disabled');
   }
 };
 
-var removeAttribute = function (aaf) {
-  for (var element of aaf) {
-    element.removeAttribute('disabled', 'disabled');
+var removeAttribute = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].removeAttribute('disabled', 'disabled');
   }
 };
 
