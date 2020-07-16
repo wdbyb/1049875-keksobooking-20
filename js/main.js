@@ -158,20 +158,21 @@ var createCardFragment = function (array) {
   return cardFragment;
 };
 
+var setAttribute = function (aaf) {
+  for (var element of aaf) {
+    element.setAttribute('disabled', 'disabled');
+  }
+};
+
+var removeAttribute = function (aaf) {
+  for (var element of aaf) {
+    element.removeAttribute('disabled', 'disabled');
+  }
+};
+
 document.querySelector('.map').insertBefore(createCardFragment(offers[0]), filtersContainer);
 
-var housingType = document.querySelector('#housing-type');
-var housingPrice = document.querySelector('#housing-price');
-var housingRooms = document.querySelector('#housing-rooms');
-var housingGuests = document.querySelector('#housing-guests');
-var housingFeatures = document.querySelector('#housing-features');
-
-housingType.setAttribute('disabled', 'disabled');
-housingPrice.setAttribute('disabled', 'disabled');
-housingRooms.setAttribute('disabled', 'disabled');
-housingGuests.setAttribute('disabled', 'disabled');
-housingFeatures.setAttribute('disabled', 'disabled');
-
+var formFieldsets = form.querySelectorAll('fieldset');
 var mapPinMain = document.querySelector('.map__pin--main');
 var addressTop = parseInt(mapPinMain.style.top, 10) + MAIN_PIN_HEIGHT + 'px';
 var addressLeft = parseInt(mapPinMain.style.left, 10) + MAIN_PIN_WIDTH + 'px';
@@ -181,11 +182,7 @@ mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
-    housingType.removeAttribute('disabled', 'disabled');
-    housingPrice.removeAttribute('disabled', 'disabled');
-    housingRooms.removeAttribute('disabled', 'disabled');
-    housingGuests.removeAttribute('disabled', 'disabled');
-    housingFeatures.removeAttribute('disabled', 'disabled');
+    removeAttribute(formFieldsets);
     formAddress.value = addressLeft + ', ' + addressTop;
   }
 });
@@ -195,11 +192,7 @@ mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
-    housingType.removeAttribute('disabled', 'disabled');
-    housingPrice.removeAttribute('disabled', 'disabled');
-    housingRooms.removeAttribute('disabled', 'disabled');
-    housingGuests.removeAttribute('disabled', 'disabled');
-    housingFeatures.removeAttribute('disabled', 'disabled');
+    removeAttribute(formFieldsets);
     formAddress.value = addressLeft + ', ' + addressTop;
   }
 });
@@ -268,3 +261,5 @@ formRoomNumber.addEventListener('change', compareRoomsAndCapacity);
 formCapacity.addEventListener('change', compareRoomsAndCapacity);
 
 compareRoomsAndCapacity();
+
+setAttribute(formFieldsets);
