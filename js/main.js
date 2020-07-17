@@ -122,7 +122,6 @@ var createCard = function (ticket) {
   var cardOfferPhotos = cardTemplateElement.querySelector('.popup__photos');
   var cardOfferAvatar = cardTemplateElement.querySelector('.popup__avatar');
 
-
   if (ticket.offer.title === undefined) {
     cardOfferTitle.classList.add('hidden');
   } else {
