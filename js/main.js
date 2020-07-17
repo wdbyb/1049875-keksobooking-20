@@ -123,14 +123,53 @@ var createCard = function (ticket) {
   var cardOfferAvatar = cardTemplateElement.querySelector('.popup__avatar');
 
 
-  cardOfferTitle.textContent = ticket.offer.title;
-  cardOfferAddress.textContent = ticket.offer.address;
-  cardOfferPrice.textContent = ticket.offer.price + '₽/ночь';
-  cardOfferRoomsAndGuests.textContent = ticket.offer.rooms + ' комнаты для ' + ticket.offer.guests + ' гостей';
-  cardOfferTime.textContent = 'Заезд после ' + ticket.offer.checkin + ', выезд до ' + ticket.offer.checkout;
-  cardOfferFeatures.textContent = ticket.offer.features;
-  cardOfferDescription.textContent = ticket.offer.description;
-  cardOfferAvatar.src = ticket.author.avatar;
+  if (ticket.offer.title === undefined) {
+    cardOfferTitle.classList.add('hidden');
+  } else {
+    cardOfferTitle.textContent = ticket.offer.title;
+  }
+
+  if (ticket.offer.address === undefined) {
+    cardOfferAddress.classList.add('hidden');
+  } else {
+    cardOfferAddress.textContent = ticket.offer.address;
+  }
+
+  if (ticket.offer.price === undefined) {
+    cardOfferPrice.classList.add('hidden');
+  } else {
+    cardOfferPrice.textContent = ticket.offer.price + '₽/ночь';
+  }
+
+  if (ticket.offer.rooms === undefined || ticket.offer.guests === undefined) {
+    cardOfferRoomsAndGuests.classList.add('hidden');
+  } else {
+    cardOfferRoomsAndGuests.textContent = ticket.offer.rooms + ' комнаты для ' + ticket.offer.guests + ' гостей';
+  }
+
+  if (ticket.offer.checkin === undefined || ticket.offer.checkout === undefined) {
+    cardOfferTime.classList.add('hidden');
+  } else {
+    cardOfferTime.textContent = 'Заезд после ' + ticket.offer.checkin + ', выезд до ' + ticket.offer.checkout;
+  }
+
+  if (ticket.offer.features === undefined) {
+    cardOfferFeatures.classList.add('hidden');
+  } else {
+    cardOfferFeatures.textContent = ticket.offer.features;
+  }
+
+  if (ticket.offer.description === undefined) {
+    cardOfferDescription.classList.add('hidden');
+  } else {
+    cardOfferDescription.textContent = ticket.offer.description;
+  }
+
+  if (ticket.author.avatar === undefined) {
+    cardOfferAvatar.classList.add('hidden');
+  } else {
+    cardOfferAvatar.src = ticket.author.avatar;
+  }
 
   if (ticket.offer.type === 'flat') {
     cardOffferType.textContent = 'Квартира';
@@ -234,25 +273,17 @@ var fillTimeInputs = function (changer, changes) {
   changes.value = changer.value;
 };
 
+
 var compareRoomsAndCapacity = function () {
-  if (formCapacity.value === '0') {
-    if (formRoomNumber.value === '100') {
-      formRoomNumber.setCustomValidity('');
-      formCapacity.setCustomValidity('');
-    } else {
-      formRoomNumber.setCustomValidity('Только 100 комнат!');
-    }
-  } else if (formRoomNumber.value === '100') {
-    if (formCapacity.value !== '0') {
-      formCapacity.setCustomValidity('Не для гостей');
-    } else {
-      formCapacity.setCustomValidity('');
-      formRoomNumber.setCustomValidity('');
-    }
+  if (formCapacity.value === '0' && formRoomNumber.value !== '100') {
+    formRoomNumber.setCustomValidity('Только 100 комнат!');
+  } else if (formRoomNumber.value === '100' && formCapacity.value !== '0') {
+    formCapacity.setCustomValidity('Не для гостей');
   } else if (formRoomNumber.value < formCapacity.value) {
     formCapacity.setCustomValidity('Понижай или проиграешь.');
   } else {
     formCapacity.setCustomValidity('');
+    formRoomNumber.setCustomValidity('');
   }
 };
 
