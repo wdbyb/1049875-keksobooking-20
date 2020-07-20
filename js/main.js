@@ -190,10 +190,11 @@ var createCard = function (ticket) {
   return cardTemplateElement;
 };
 
-var createCardFragment = function (array) {
+var createCardFragment = function (objects) {
   var cardFragment = document.createDocumentFragment();
-  cardFragment.appendChild(createCard(array));
-
+  for (var i = 0; i < objects.length; i++) {
+    cardFragment.appendChild(createCard(offers[i]));
+  }
   return cardFragment;
 };
 
@@ -209,7 +210,9 @@ var removeAttribute = function (elements) {
   }
 };
 
-document.querySelector('.map').insertBefore(createCardFragment(offers[0]), filtersContainer);
+var cards = createCardFragment(offers);
+
+document.querySelector('.map').insertBefore(cards, filtersContainer);
 
 var formFieldsets = form.querySelectorAll('fieldset');
 var mapPinMain = document.querySelector('.map__pin--main');
@@ -294,3 +297,45 @@ formCapacity.addEventListener('change', compareRoomsAndCapacity);
 compareRoomsAndCapacity();
 
 setAttribute(formFieldsets);
+
+var myPins = document.querySelectorAll('.map__pin');
+var myCards = document.querySelectorAll('.map__card');
+
+var closy = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    arr[i].addEventListener('click', function () {
+      console.log(1);
+    });
+  }
+};
+
+var closyTwo = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    closyThree(arr[i]);
+  }
+};
+
+var closyThree = function (arr) {
+  var ell = arr.querySelector('.popup__close');
+  ell.addEventListener('click', function () {
+    arr.classList.add('hidden');
+  });
+};
+
+var openZ = function (arr1, arr2) {
+  arr1.addEventListener('click', function () {
+    arr2.classList.remove('hidden');
+  });
+};
+
+var openR = function (arr1, arr2) {
+  for (var i = 0; i < arr1.length; i++) {
+    openZ(arr1[i], arr2[i]);
+  }
+};
+
+closyTwo(myCards);
+
+openR(myPins, myCards);
+
+console.log(myCards.length);
