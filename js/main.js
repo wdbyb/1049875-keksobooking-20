@@ -298,44 +298,185 @@ compareRoomsAndCapacity();
 
 setAttribute(formFieldsets);
 
-var myPins = document.querySelectorAll('.map__pin');
+var myPins = document.querySelectorAll('.map__pin:not(:nth-of-type(1))');
 var myCards = document.querySelectorAll('.map__card');
 
-var closy = function (arr) {
-  for (var i = 0; i < arr.length; i++) {
-    arr[i].addEventListener('click', function () {
-      console.log(1);
+var setAttributeIndex = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].setAttribute('tabindex', '0');
+  }
+};
+
+var addClassHidden = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].classList.add('hidden');
+  }
+};
+
+// pinsBlock
+
+mapPinMain.setAttribute('tabindex', '0');
+
+setAttributeIndex(myPins);
+
+addClassHidden(myCards);
+
+var closePopup = function (card) {
+  card.classList.add('hidden');
+};
+
+var openPopup = function (card) {
+  card.classList.remove('hidden');
+};
+
+var openClick = function (arg1, arg2) {
+  arg1.addEventListener('click', function () {
+    addClassHidden(myCards);
+    openPopup(arg2);
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        closePopup(arg2);
+      }
     });
+  });
+};
+
+var allOpenClick = function (arr1, arr2) {
+  for (var i = 0; i < arr1.length; i++) {
+    openClick(arr1[i], arr2[i]);
   }
 };
 
-var closyTwo = function (arr) {
-  for (var i = 0; i < arr.length; i++) {
-    closyThree(arr[i]);
-  }
-};
+allOpenClick(myPins, myCards);
 
-var closyThree = function (arr) {
+var closePopupClick = function (arr) {
   var ell = arr.querySelector('.popup__close');
   ell.addEventListener('click', function () {
-    arr.classList.add('hidden');
+    closePopup(arr);
   });
 };
 
-var openZ = function (arr1, arr2) {
-  arr1.addEventListener('click', function () {
-    arr2.classList.remove('hidden');
-  });
-};
-
-var openR = function (arr1, arr2) {
-  for (var i = 0; i < arr1.length; i++) {
-    openZ(arr1[i], arr2[i]);
+var allCloseClick = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    closePopupClick(arr[i]);
   }
 };
 
-closyTwo(myCards);
+allCloseClick(myCards);
 
-openR(myPins, myCards);
+// var closePopupKey = function (evt) {
+//   if (evt.key === 'Escape') {
+//     evt.preventDefault();
+//     closePopup(arr);
+//   }
+// });
+//
+// var allCloseKey = function (arr) {
+//   for (var i = 0; i < arr.length; i++) {
+//     closePopupKey(arr[i]);
+//   }
+// };
 
-console.log(myCards.length);
+// var closy = function (arr) {
+//   for (var i = 0; i < arr.length; i++) {
+//     arr[i].addEventListener('click', function () {
+//       console.log(1);
+//     });
+//   }
+// };
+//
+// var closyTwo = function (arr) {
+//   for (var i = 0; i < arr.length; i++) {
+//     closyThree(arr[i]);
+//   }
+// };
+//
+// var closyThree = function (arr) {
+//   var ell = arr.querySelector('.popup__close');
+//   ell.addEventListener('click', function () {
+//     arr.classList.add('hidden');
+//   });
+// };
+//
+// var allCloseClick = function (arr) {
+//   for (var i = 0; i < arr.length; i++) {
+//     closePopupClick(arr[i]);
+//   }
+// };
+//
+// var allCloseKey = function (arr) {
+//   for (var i = 0; i < arr.length; i++) {
+//     closePopupKey(arr[i]);
+//   }
+// };
+//
+// var closePopupKey = function (evt) {
+//   if (evt.key === 'Esc') {
+//     evt.preventDefault();
+//     closePopup(arr);
+//   }
+// });
+// };
+//
+// // var closeKey = function (arr1, arr2) {
+// //   arr1.addEventListener('keydown', function (evt) {
+// //     if (evt.key === 'Esc') {
+// //       evt.preventDefault();
+// //       closePopup(arr2);
+// //     }
+// //   });
+// // };
+//
+// var closePopupClick = function (arr) {
+//   var ell = arr.querySelector('.popup__close');
+//   ell.addEventListener('click', function () {
+//     closePopup(arr);
+//   });
+// };
+//
+// var openClick = function (arr1, arr2) {
+//   arr1.addEventListener('click', function () {
+//     openPopup(arr2);
+//   });
+// };
+//
+// var openKey = function (arr1, arr2) {
+//   arr1.addEventListener('keydown', function (evt) {
+//     if (evt.key === 'Enter') {
+//       evt.preventDefault();
+//       openPopup(arr2);
+//     }
+//   });
+// };
+//
+// var allOpenClick = function (arr1, arr2) {
+//   for (var i = 0; i < arr1.length; i++) {
+//     openClick(arr1[i], arr2[i]);
+//   }
+// };
+//
+// var allOpenKey = function (arr1, arr2) {
+//   for (var i = 0; i < arr1.length; i++) {
+//     openKey(arr1[i], arr2[i]);
+//   }
+// };
+//
+// var openPopup = function (item) {
+//   item.classList.remove('hidden');
+// };
+//
+// var closePopup = function (item) {
+//   item.classList.add('hidden');
+// };
+//
+// // closyTwo(myCards);
+//
+// allCloseClick(myCards);
+// allCloseKey(myCards);
+//
+// allOpenClick(myPins, myCards);
+// allOpenKey(myPins, myCards);
+//
+// console.log(myCards.length);
