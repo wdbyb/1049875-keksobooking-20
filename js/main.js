@@ -82,6 +82,27 @@ var createPin = function (offer) {
   mapPinElement.querySelector('img').src = offer.author.avatar;
   mapPinElement.querySelector('img').alt = offer.offer.title;
 
+  mapPinElement.addEventListener('click', function () {
+    var ifEmpty = map.querySelector('.map__card');
+
+    if (ifEmpty !== null) {
+      map.removeChild(ifEmpty);
+    }
+
+    var card = createCard(offer);
+
+    document.querySelector('.map').insertBefore(card, filtersContainer);
+
+    closePopupClick(card);
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        closePopup(card);
+      }
+    });
+  });
+
   return mapPinElement;
 };
 
@@ -94,8 +115,6 @@ var createPins = function (objects) {
 };
 
 var fragment = createPins(offers);
-
-pinsBlock.appendChild(fragment);
 
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
@@ -190,14 +209,6 @@ var createCard = function (ticket) {
   return cardTemplateElement;
 };
 
-var createCardFragment = function (objects) {
-  var cardFragment = document.createDocumentFragment();
-  for (var i = 0; i < objects.length; i++) {
-    cardFragment.appendChild(createCard(offers[i]));
-  }
-  return cardFragment;
-};
-
 var setAttribute = function (elements) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].setAttribute('disabled', 'disabled');
@@ -210,9 +221,9 @@ var removeAttribute = function (elements) {
   }
 };
 
-var cards = createCardFragment(offers);
+// var cards = createCardFragment(offers);
 
-document.querySelector('.map').insertBefore(cards, filtersContainer);
+// document.querySelector('.map').insertBefore(cards, filtersContainer);
 
 var formFieldsets = form.querySelectorAll('fieldset');
 var mapPinMain = document.querySelector('.map__pin--main');
@@ -224,6 +235,7 @@ mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
+    pinsBlock.appendChild(fragment);
     removeAttribute(formFieldsets);
     formAddress.value = addressLeft + ', ' + addressTop;
   }
@@ -234,6 +246,7 @@ mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     map.classList.remove('map--faded');
     form.classList.remove('ad-form--disabled');
+    pinsBlock.appendChild(fragment);
     removeAttribute(formFieldsets);
     formAddress.value = addressLeft + ', ' + addressTop;
   }
@@ -299,7 +312,6 @@ compareRoomsAndCapacity();
 setAttribute(formFieldsets);
 
 var myPins = document.querySelectorAll('.map__pin:not(:nth-of-type(1))');
-var myCards = document.querySelectorAll('.map__card');
 
 var setAttributeIndex = function (elements) {
   for (var i = 0; i < elements.length; i++) {
@@ -307,49 +319,13 @@ var setAttributeIndex = function (elements) {
   }
 };
 
-var addClassHidden = function (elements) {
-  for (var i = 0; i < elements.length; i++) {
-    elements[i].classList.add('hidden');
-  }
-};
-
-// pinsBlock
-
 mapPinMain.setAttribute('tabindex', '0');
 
 setAttributeIndex(myPins);
 
-addClassHidden(myCards);
-
 var closePopup = function (card) {
   card.classList.add('hidden');
 };
-
-var openPopup = function (card) {
-  card.classList.remove('hidden');
-};
-
-var openClick = function (arg1, arg2) {
-  arg1.addEventListener('click', function () {
-    addClassHidden(myCards);
-    openPopup(arg2);
-
-    document.addEventListener('keydown', function (evt) {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        closePopup(arg2);
-      }
-    });
-  });
-};
-
-var allOpenClick = function (arr1, arr2) {
-  for (var i = 0; i < arr1.length; i++) {
-    openClick(arr1[i], arr2[i]);
-  }
-};
-
-allOpenClick(myPins, myCards);
 
 var closePopupClick = function (arr) {
   var ell = arr.querySelector('.popup__close');
@@ -357,126 +333,3 @@ var closePopupClick = function (arr) {
     closePopup(arr);
   });
 };
-
-var allCloseClick = function (arr) {
-  for (var i = 0; i < arr.length; i++) {
-    closePopupClick(arr[i]);
-  }
-};
-
-allCloseClick(myCards);
-
-// var closePopupKey = function (evt) {
-//   if (evt.key === 'Escape') {
-//     evt.preventDefault();
-//     closePopup(arr);
-//   }
-// });
-//
-// var allCloseKey = function (arr) {
-//   for (var i = 0; i < arr.length; i++) {
-//     closePopupKey(arr[i]);
-//   }
-// };
-
-// var closy = function (arr) {
-//   for (var i = 0; i < arr.length; i++) {
-//     arr[i].addEventListener('click', function () {
-//       console.log(1);
-//     });
-//   }
-// };
-//
-// var closyTwo = function (arr) {
-//   for (var i = 0; i < arr.length; i++) {
-//     closyThree(arr[i]);
-//   }
-// };
-//
-// var closyThree = function (arr) {
-//   var ell = arr.querySelector('.popup__close');
-//   ell.addEventListener('click', function () {
-//     arr.classList.add('hidden');
-//   });
-// };
-//
-// var allCloseClick = function (arr) {
-//   for (var i = 0; i < arr.length; i++) {
-//     closePopupClick(arr[i]);
-//   }
-// };
-//
-// var allCloseKey = function (arr) {
-//   for (var i = 0; i < arr.length; i++) {
-//     closePopupKey(arr[i]);
-//   }
-// };
-//
-// var closePopupKey = function (evt) {
-//   if (evt.key === 'Esc') {
-//     evt.preventDefault();
-//     closePopup(arr);
-//   }
-// });
-// };
-//
-// // var closeKey = function (arr1, arr2) {
-// //   arr1.addEventListener('keydown', function (evt) {
-// //     if (evt.key === 'Esc') {
-// //       evt.preventDefault();
-// //       closePopup(arr2);
-// //     }
-// //   });
-// // };
-//
-// var closePopupClick = function (arr) {
-//   var ell = arr.querySelector('.popup__close');
-//   ell.addEventListener('click', function () {
-//     closePopup(arr);
-//   });
-// };
-//
-// var openClick = function (arr1, arr2) {
-//   arr1.addEventListener('click', function () {
-//     openPopup(arr2);
-//   });
-// };
-//
-// var openKey = function (arr1, arr2) {
-//   arr1.addEventListener('keydown', function (evt) {
-//     if (evt.key === 'Enter') {
-//       evt.preventDefault();
-//       openPopup(arr2);
-//     }
-//   });
-// };
-//
-// var allOpenClick = function (arr1, arr2) {
-//   for (var i = 0; i < arr1.length; i++) {
-//     openClick(arr1[i], arr2[i]);
-//   }
-// };
-//
-// var allOpenKey = function (arr1, arr2) {
-//   for (var i = 0; i < arr1.length; i++) {
-//     openKey(arr1[i], arr2[i]);
-//   }
-// };
-//
-// var openPopup = function (item) {
-//   item.classList.remove('hidden');
-// };
-//
-// var closePopup = function (item) {
-//   item.classList.add('hidden');
-// };
-//
-// // closyTwo(myCards);
-//
-// allCloseClick(myCards);
-// allCloseKey(myCards);
-//
-// allOpenClick(myPins, myCards);
-// allOpenKey(myPins, myCards);
-//
-// console.log(myCards.length);
